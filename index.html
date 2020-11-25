@@ -21,12 +21,13 @@
         1000 // Far clipping distance
       );
 
-      const renderer = new THREE.WebGLRenderer();
+      const renderer = new THREE.WebGLRenderer({ alpha: true });
       // First two arguments to setSize are the width and height we want to
       // render our app.
       // If you want to render your app at a lower resolution, pass false as
       // the third argument to `setSize`
-      renderer.setSize(window.innderWidth, window.innerHeight);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setClearColor(0x706993, 1);
       document.body.appendChild(renderer.domElement);
 
       // Adding cube to scene
@@ -36,7 +37,7 @@
       const geometry = new THREE.BoxGeometry();
       // Materials take an object of properties that will be applied to
       // them, like a base color.
-      const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+      const material = new THREE.MeshStandardMaterial({ color: 0x70a0af });
 
       // Mesh takes a geometry as an argument and applies a specified
       // material to it.
@@ -45,14 +46,35 @@
 
       camera.position.z = 5;
 
+      // Create an ambient light with an intensity of 1.0
+      const ambientLight = new THREE.AmbientLight(0x331e38, 1.0);
+      scene.add(ambientLight);
+
+      // Create a directional light with an intensity of 1.0
+      const directionalLight = new THREE.DirectionalLight(0xf4e8c1, 1.0);
+      directionalLight.position.set(0, 10, 0);
+      scene.add(directionalLight);
+
       // At this point, we're not seeing anything in the browser window
       // because we're not actually rendering anything yet.
 
       // We need a render (or animate) loop:
-      function animate() {
+      const animate = () => {
+        // Schedule the animate function to be called at the start of every
+        // frame
         requestAnimationFrame(animate);
+
+        // Rotate the cube each frame
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+        cube.rotation.z += 0.01;
+
+        // Render a frame
         renderer.render(scene, camera);
-      }
+      };
+
+      // Anything you want to move or change while the app is running has
+      // to go through the animate loop.
 
       animate();
     </script>
