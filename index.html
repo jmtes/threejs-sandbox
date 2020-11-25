@@ -10,9 +10,51 @@
     </style>
   </head>
   <body>
-    <script src="js/three.js"></script>
+    <script src="scripts/three.js"></script>
     <script>
-      // Our Javascript will go here.
+      // Set up scene, camera, and renderer
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        75, // Field of view in degrees
+        window.innerWidth / window.innerHeight, // Aspect ratio
+        0.1, // Near clipping distance
+        1000 // Far clipping distance
+      );
+
+      const renderer = new THREE.WebGLRenderer();
+      // First two arguments to setSize are the width and height we want to
+      // render our app.
+      // If you want to render your app at a lower resolution, pass false as
+      // the third argument to `setSize`
+      renderer.setSize(window.innderWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      // Adding cube to scene
+
+      // BoxGeometry is an object that contains all the vertices and faces
+      // of the cube.
+      const geometry = new THREE.BoxGeometry();
+      // Materials take an object of properties that will be applied to
+      // them, like a base color.
+      const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+
+      // Mesh takes a geometry as an argument and applies a specified
+      // material to it.
+      const cube = new THREE.Mesh(geometry, material);
+      scene.add(cube);
+
+      camera.position.z = 5;
+
+      // At this point, we're not seeing anything in the browser window
+      // because we're not actually rendering anything yet.
+
+      // We need a render (or animate) loop:
+      function animate() {
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+      }
+
+      animate();
     </script>
   </body>
 </html>
