@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 // Set up scene, camera, and renderer
 const scene = new THREE.Scene();
@@ -22,17 +23,32 @@ document.body.appendChild(renderer.domElement);
 
 // BoxGeometry is an object that contains all the vertices and faces
 // of the cube.
-const geometry = new THREE.BoxGeometry();
+// const geometry = new THREE.BoxGeometry();
 // Materials take an object of properties that will be applied to
 // them, like a base color.
-const material = new THREE.MeshStandardMaterial({ color: 0x70a0af });
+// const material = new THREE.MeshStandardMaterial({ color: 0x70a0af });
 
 // Mesh takes a geometry as an argument and applies a specified
 // material to it.
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+// const cube = new THREE.Mesh(geometry, material);
+// scene.add(cube);
 
-camera.position.z = 5;
+// Add 3D model to scene
+
+const loader = new GLTFLoader();
+
+loader.load(
+  './models/world.glb',
+  function (gltf) {
+    scene.add(gltf.scene);
+  },
+  undefined,
+  function (error) {
+    console.error(error);
+  }
+);
+
+camera.position.z = 0;
 
 // Create an ambient light with an intensity of 1.0
 const ambientLight = new THREE.AmbientLight(0x331e38, 1.0);
@@ -53,9 +69,9 @@ const animate = () => {
   requestAnimationFrame(animate);
 
   // Rotate the cube each frame
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
-  cube.rotation.z += 0.01;
+  // cube.rotation.x += 0.01;
+  // cube.rotation.y += 0.01;
+  // cube.rotation.z += 0.01;
 
   // Render a frame
   renderer.render(scene, camera);
